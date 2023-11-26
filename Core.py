@@ -1,7 +1,6 @@
 import os
 import math
 
-
 def list_of_files(directory, extension):
     files_names = []
     for filename in os.listdir(directory):
@@ -16,9 +15,8 @@ prez_name = {"Jacques": "Chirac",
              "Valéry": "Giscard dEstaing",
              "François": "Hollande",
              "Emmanuel": "Macron",
-             "François": "Mitterand",
+             "françois": "Mitterand",
              "Nicolas": "Sarkozy"}
-
 
 def prez_lastname():
     prez_lastnam = []
@@ -54,17 +52,16 @@ def convert():
                     c.write(charac)
 
 
-def df(string):
+def tf(string):
     dic = {}
-    a = string.split(" ")
-    print(a)
+    b = string.replace('\n', ' ')
+    a = b.split(" ")
     for i in range(len(a)):
         if a[i] in dic:
             dic[a[i]] += 1
         else:
             dic[a[i]] = 1
     return dic
-
 
 def idf():
     dic = {}
@@ -100,4 +97,101 @@ def idf():
     return dicidf
 
 
-print(idf())
+def tf_idf(direct):
+    idfdic = idf()
+    mtfidf = []
+    for element in idf():
+        newlist = []
+        for j in range(8):
+            f = open(direct+"/"+prez_file[j])
+            readfile = f.read()
+            if element in tf(readfile):
+                newlist.append((tf(readfile)[element]*idfdic[element]))
+            else:
+                newlist.append(0.0)
+        mtfidf.append(newlist)
+
+    return idfdic, mtfidf
+
+def print_mtfidf():
+    idfdic = idf()
+    mtfidf = tf_idf("Cleaned")[1]
+    x = 0
+    for element in idfdic:
+        print(element, mtfidf[x])
+        x+=1
+
+def ex1():
+    idfdic = idf()
+    matrix = tf_idf("Cleaned")[1]
+    uniml = []
+    x = 0
+    for element in idfdic:
+        unim = True
+        for i in range(len(matrix[x])):
+            if matrix[x][i] != 0.0:
+                unim = False
+        if unim:
+            uniml.append(element)
+        x += 1
+    return uniml
+
+
+def ex2():
+    idfdic = idf()
+    matrix = tf_idf("Cleaned")[1]
+    maximum = 0.0
+    maxlist = []
+    x = 0
+    for element in idfdic:
+        for i in range(len(matrix[x])):
+            if matrix[x][i] > maximum:
+                print(matrix[x][i])
+                maximum = matrix[x][i]
+        x+=1
+    x=0
+    for element in idfdic:
+        if maximum in matrix[x]:
+            maxlist.append(element)
+        x += 1
+    if len(maxlist)==1:
+        return maxlist[0]
+    else:
+        return maxlist
+
+def ex3():
+    max1 = 0
+    max1w = ""
+    max2 = 0
+    max2w = ""
+    f = open("Cleaned/Nomination_Chirac1.txt", "r")
+    read1 = f.read()
+    dic1 = tf(read1)
+    g = open("Cleaned/Nomination_Chirac2.txt", "r")
+    read2 = g.read()
+    dic2 = tf(read1)
+
+    for element in dic1:
+
+        if dic1[element] > max1 and element != '':
+
+            max1 = dic1[element]
+            max1w = element
+    for element in dic2:
+        if dic2[element] > max2 and element != '':
+            max2 = dic2[element]
+            max2w = element
+    if max1w == max2w:
+        return max1w
+    else:
+        return max1w, max2w
+
+def ex4():
+    listprez = []
+    for element in prez_file:
+        f = open("Cleaned/"+element)
+        reading = f.read()
+        dic = tf(reading)
+        if "nation" in dic and element.strip("Nomination_").strip(".txt").strip("1").strip("2") not in listprez:
+            listprez.append(element.strip("Nomination_").strip(".txt").strip("1").strip("2"))
+    return listprez
