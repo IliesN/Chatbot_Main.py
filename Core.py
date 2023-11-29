@@ -146,7 +146,6 @@ def ex2():
     for element in idfdic:
         for i in range(len(matrix[x])):
             if matrix[x][i] > maximum:
-                print(matrix[x][i])
                 maximum = matrix[x][i]
         x+=1
     x=0
