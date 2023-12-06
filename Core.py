@@ -92,7 +92,7 @@ def idf():
             else:
                 dicidf[el] = 1
     for ele in dicidf:
-        dicidf[ele] = math.log(nfile/dicidf[ele])
+        dicidf[ele] = math.log10(nfile/dicidf[ele])
 
     return dicidf
 
