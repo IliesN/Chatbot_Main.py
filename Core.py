@@ -208,3 +208,11 @@ def ex5():
                 premierprez.append(element.strip("Nomination_").strip(".txt").strip("1").strip("2"))
                 premier = False #Le programme s'arrêtera dès le premier président trouvé
     return premierprez[0]
+
+
+def motquestion(question):
+    question = input("saisr une question")
+
+    for mot in question:
+        list_mot= question.split( " ")
+    return list_mot
