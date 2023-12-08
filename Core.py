@@ -197,14 +197,14 @@ def ex4():
 
 
 def ex5():
+    premier = True
     premierprez = []
-    premier = False
-    while premier == False:
-        for element in prez_file:
-            f = open("Cleaned/"+element)
-            reading = f.read()
-            dic = tf(reading)
+    for element in prez_file:
+        f = open("Cleaned/"+element)
+        reading = f.read()
+        dic = tf(reading)
+        while premier:
             if "climat" or "écologie" in dic :
-            listprez.append(element.strip("Nomination_").strip(".txt").strip("1").strip("2"))
-            premier = True
-    return premierprez
+                premierprez.append(element.strip("Nomination_").strip(".txt").strip("1").strip("2"))
+                premier = False #Le programme s'arrêtera dès le premier président trouvé
+    return premierprez[0]
