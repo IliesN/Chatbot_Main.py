@@ -194,3 +194,17 @@ def ex4():
         if "nation" in dic and element.strip("Nomination_").strip(".txt").strip("1").strip("2") not in listprez:
             listprez.append(element.strip("Nomination_").strip(".txt").strip("1").strip("2"))
     return listprez
+
+
+def ex5():
+    premierprez = []
+    premier = False
+    while premier == False:
+        for element in prez_file:
+            f = open("Cleaned/"+element)
+            reading = f.read()
+            dic = tf(reading)
+            if "climat" or "écologie" in dic :
+            listprez.append(element.strip("Nomination_").strip(".txt").strip("1").strip("2"))
+            premier = True
+    return premierprez
