@@ -211,6 +211,33 @@ def ex5():
     return premierprez[0]
 
 
+def ex6():
+    dic = {}
+    basewordlist = []
+    unim = ex1()
+    f = open("Cleaned/Nomination_Chirac1.txt")
+    reading = f.read()
+    f.close()
+    basewordlist = reading.split()
+    for element in prez_file:
+        f = open("Cleaned/"+element)
+        reading = f.read()
+        wordlist = reading.split()
+        for element in basewordlist:
+            if element not in wordlist:
+                basewordlist.remove(element)
+    for i in range(len(basewordlist)):
+        if basewordlist[i] in dic:
+            dic[basewordlist[i]] += 1
+        else:
+            dic[basewordlist[i]] = 1
+    basewordlist = []
+    for element in dic:
+        if element not in unim:
+            basewordlist.append(element)
+    return basewordlist
+
+
 def motquestion(question):
     question = input("saisr une question")
 
