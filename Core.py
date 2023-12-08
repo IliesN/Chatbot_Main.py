@@ -50,7 +50,7 @@ def convert():
 
                     c.write("")
                 else:
-                    c.write(charac)
+                    c.write(charac) 
 
 
 def tf(string):
