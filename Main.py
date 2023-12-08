@@ -22,6 +22,14 @@ while True:
     elif choix == 4:
         print(Core.ex4())
         time.sleep(5)
+    elif choix == 5:
+        print("Le premier président à parler du climat et/ou de l'écologie est :", Core.ex5())
+        time.sleep(5)
+    elif choix == 6:
+        print("Question 6 sélectionnée. Veuillez patienter...")
+        print("Voici la liste des mots répétés par tous les présidents, hormis les mots non-importants :", Core.ex6())
+        time.sleep(5)
+
     else:
         print("Choix invalide. Veuillez choisir une option de 1 à 4.")
         time.sleep(3)
