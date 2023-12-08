@@ -237,10 +237,35 @@ def ex6():
             basewordlist.append(element)
     return basewordlist
 
+def tokenisation(string):
+    motvide = ["le", "de", "et", "la", "à", "est", "les", "pour", "un", "une"]
+    finalstr = ""
+    for charac in string:
+        if ord("A") <= ord(charac) <= ord("Z"):
+            charac = chr(ord(charac)+((ord("a")-ord("A"))))
+            finalstr+=charac
+        elif ord(charac) == ord("'"):
+            charac = ("e ")
+            finalstr += charac
+        elif ord(charac) == ord("-") or ord(charac) == ord("_"):
+            charac = (" ")
+            finalstr += charac
+        elif ord(",") <= ord(charac) <= ord(".") or ord(":") <= ord(charac) <= ord(";") or ord(charac) == ord("?") or ord(charac) == 33:
 
-def motquestion(question):
-    question = input("saisr une question")
+            charac = ("")
+            finalstr += charac
+        else:
+            finalstr += charac
+    exstr = finalstr.split()
+    for element in exstr:
+        if element in motvide:
+            exstr.remove(element)
+    return exstr
 
-    for mot in question:
-        list_mot= question.split( " ")
-    return list_mot
+def whichincorpus(q):
+    wordic = tf_idf("Cleaned")[0]
+    wordlist = tokenisation(q)
+    for element in wordlist:
+        if element not in wordic.keys():
+            wordlist.remove(element)
+    print(wordlist)
