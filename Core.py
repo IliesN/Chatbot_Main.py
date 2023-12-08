@@ -40,16 +40,17 @@ def convert():
         c = open("Cleaned/"+element, "w")
         for ligne in r.readlines():
             for charac in ligne:
-                if 65 <= ord(charac) <= 90:
-                    c.write(chr(ord(charac)+32))
-                elif ord(charac) == 39 or ord(charac) == 45:
+                if ord("A") <= ord(charac) <= ord("Z"):
+                    c.write(chr(ord(charac)+((ord("a")-ord("A")))))
+                elif ord(charac) == ord("'"):
+                    c.write("e ")
+                elif ord(charac) == ord("-") or ord(charac) == ord("_"):
                     c.write(" ")
-                elif 44 <= ord(charac) <= 46 or 58 <= ord(charac) <= 59 or ord(charac) == 63 or ord(charac) == 33:
+                elif ord(",") <= ord(charac) <= ord(".") or ord(":") <= ord(charac) <= ord(";") or ord(charac) == ord("?") or ord(charac) == ("!"):
 
                     c.write("")
-
                 else:
-                    c.write(charac)
+                    c.write(charac) 
 
 
 def tf(string):
@@ -208,3 +209,11 @@ def ex5():
                 premierprez.append(element.strip("Nomination_").strip(".txt").strip("1").strip("2"))
                 premier = False #Le programme s'arrêtera dès le premier président trouvé
     return premierprez[0]
+
+
+def motquestion(question):
+    question = input("saisr une question")
+
+    for mot in question:
+        list_mot= question.split( " ")
+    return list_mot
