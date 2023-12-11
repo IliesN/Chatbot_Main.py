@@ -46,23 +46,34 @@ def convert():
                     c.write("e ")
                 elif ord(charac) == ord("-") or ord(charac) == ord("_"):
                     c.write(" ")
-                elif ord(",") <= ord(charac) <= ord(".") or ord(":") <= ord(charac) <= ord(";") or ord(charac) == ord("?") or ord(charac) == ("!"):
+                elif ord(",") <= ord(charac) <= ord(".") or ord(":") <= ord(charac) <= ord(";") or ord(charac) == ord("?") or ord(charac) == 33:
 
                     c.write("")
                 else:
-                    c.write(charac) 
+                    c.write(charac)
+
 
 
 def tf(string):
     dic = {}
-    b = string.replace('\n', ' ')
-    a = b.split(" ")
-    for i in range(len(a)):
-        if a[i] in dic:
-            dic[a[i]] += 1
-        else:
-            dic[a[i]] = 1
-    return dic
+    if type(string) == list:
+        for i in range(len(string)):
+            if string[i] in dic:
+                dic[string[i]] += 1
+            else:
+                print("ok")
+                dic[string[i]] = 1
+        return dic
+
+    else:
+        b = string.replace('\n', ' ')
+        a = b.split(" ")
+        for i in range(len(a)):
+            if a[i] in dic:
+                dic[a[i]] += 1
+            else:
+                dic[a[i]] = 1
+        return dic
 
 def idf():
     dic = {}
@@ -98,16 +109,18 @@ def idf():
     return dicidf
 
 
+
+
 def tf_idf(direct):
     idfdic = idf()
     mtfidf = []
-    for element in idf():
+    for element in idfdic:
         newlist = []
         for j in range(8):
             f = open(direct+"/"+prez_file[j])
             readfile = f.read()
             if element in tf(readfile):
-                newlist.append((tf(readfile)[element]*idfdic[element]))
+                newlist.append(round(tf(readfile)[element]*idfdic[element], 2))
             else:
                 newlist.append(0.0)
         mtfidf.append(newlist)
@@ -119,8 +132,10 @@ def print_mtfidf():
     mtfidf = tf_idf("Cleaned")[1]
     x = 0
     for element in idfdic:
-        print(element, mtfidf[x])
+        print(mtfidf[x], element)
         x+=1
+
+    print(x, " mots")
 
 def ex1():
     idfdic = idf()
@@ -160,6 +175,7 @@ def ex2():
         return maxlist
 
 def ex3():
+    unimportant_words = ex1()
     max1 = 0
     max1w = ""
     max2 = 0
@@ -173,12 +189,12 @@ def ex3():
 
     for element in dic1:
 
-        if dic1[element] > max1 and element != '':
+        if dic1[element] > max1 and element != '' and element not in unimportant_words:
 
             max1 = dic1[element]
             max1w = element
     for element in dic2:
-        if dic2[element] > max2 and element != '':
+        if dic2[element] > max2 and element != '' and element not in unimportant_words:
             max2 = dic2[element]
             max2w = element
     if max1w == max2w:
@@ -188,6 +204,7 @@ def ex3():
 
 def ex4():
     listprez = []
+    nationmax = 0
     for element in prez_file:
         f = open("Cleaned/"+element)
         reading = f.read()
@@ -195,7 +212,6 @@ def ex4():
         if "nation" in dic and element.strip("Nomination_").strip(".txt").strip("1").strip("2") not in listprez:
             listprez.append(element.strip("Nomination_").strip(".txt").strip("1").strip("2"))
     return listprez
-
 
 def ex5():
     premier = True
@@ -207,9 +223,8 @@ def ex5():
         while premier:
             if "climat" or "écologie" in dic :
                 premierprez.append(element.strip("Nomination_").strip(".txt").strip("1").strip("2"))
-                premier = False #Le programme s'arrêtera dès le premier président trouvé
+                premier = False
     return premierprez[0]
-
 
 def ex6():
     dic = {}
@@ -269,3 +284,17 @@ def whichincorpus(q):
         if element not in wordic.keys():
             wordlist.remove(element)
     print(wordlist)
+
+def q_tf(string):
+    string2 = tokenisation(string)
+    l = len(string2)
+    dictfq = tf(string2)
+    for element in dictfq:
+        dictfq[element]/=l
+    return dictfq
+
+
+
+
+
+
