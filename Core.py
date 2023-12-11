@@ -61,7 +61,6 @@ def tf(string):
             if string[i] in dic:
                 dic[string[i]] += 1
             else:
-                print("ok")
                 dic[string[i]] = 1
         return dic
 
