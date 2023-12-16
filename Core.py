@@ -20,21 +20,6 @@ prez_nom = {"Jacques": "Chirac",
             "Nicolas": "Sarkozy"}
 
 
-def prez_nomfamille():
-    prez_lastnam = []
-    for filename in prez_fichiers:
-        with open("speeches-20231108/" + filename, "r") as file:
-            j = 0
-            for char in file.read():
-                if char in ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "."]:
-                    break
-                else:
-                    j += 1
-            if (file.read(11)[11:j]) not in prez_lastnam:
-                prez_lastnam.append(file.read(11)[11:j])
-    return prez_lastnam
-
-
 def convert():
     for element in prez_fichiers:
         r = open("speeches-20231108/"+element, "r")
