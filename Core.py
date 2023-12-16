@@ -1,12 +1,17 @@
 import os
 import math
 
-
-def liste_fichiers(directory, extension):
+# fonction qui permet de parcourir la liste des fichiers d’une extension donnée et dans un répertoire donné.
+def liste_fichiers(directory, extension): 
+    #créaton d'une liste files_names pour stocker les noms de chaque fichier.
     files_names = []
+    # Parcours tous le fichiers dans le répertoire spécifié
     for filename in os.listdir(directory):
+        # Vérifie si le nom du fichier se termine par l'extension
         if filename.endswith(extension):
+            #Ajoute le nom du fichier dans la liste
             files_names.append(filename)
+    #Retroune la liste des noms de fichier
     return files_names
 
 
