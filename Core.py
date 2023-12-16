@@ -9,14 +9,15 @@ def liste_fichiers(directory, extension):
     for filename in os.listdir(directory):
         # Vérifie si le nom du fichier se termine par l'extension
         if filename.endswith(extension):
-            #Ajoute le nom du fichier dans la liste
             files_names.append(filename)
     #Retroune la liste des noms de fichier
     return files_names
 
-
+#Utilisation de la fonction liste_fichiers pour obtenir la liste des fichiers avec l'extension .txt 
 prez_fichiers = liste_fichiers("speeches-20231108", ".txt")
+#Calcul le nombre de fichier de la liste prez_fichiers
 nfile = len(prez_fichiers)
+#Création d'un dictionnaire associant chaque prénom à des noms de dirigeants politiques
 prez_nom = {"Jacques": "Chirac",
              "Valéry": "Giscard dEstaing",
              "François": "Hollande",
@@ -24,17 +25,20 @@ prez_nom = {"Jacques": "Chirac",
              "françois": "Mitterand",
              "Nicolas": "Sarkozy"}
 
-
+#Fonction pour stocker les noms de president dans une liste
 def prez_nomfamille():
     prez_lastnam = []
     for filename in prez_fichiers:
+        # Ouverture du fichier en mode lecture
         with open("speeches-20231108/" + filename, "r") as file:
             j = 0
             for char in file.read():
+                # Si le caractère est un chiffre ou un point, arrête la boucle
                 if char in ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "."]:
                     break
                 else:
                     j += 1
+            #Lecture d'une portion du fichier pour obtenir le nom de famille puis vérifie si le nom est dans la liste prez_lastam
             if (file.read(11)[11:j]) not in prez_lastnam:
                 prez_lastnam.append(file.read(11)[11:j])
     return prez_lastnam
