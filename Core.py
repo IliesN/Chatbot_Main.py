@@ -46,35 +46,44 @@ def prez_nomfamille():
 
 def convert():
     for element in prez_fichiers:
-        r = open("speeches-20231108/"+element, "r")
-        c = open("Cleaned/"+element, "w")
-        for line in r.readlines():
-            for character in line:
-                if ord("A") <= ord(character) <= ord("Z"):
-                    c.write(chr(ord(character)+(ord("a")-ord("A"))))
-                elif ord(character) == ord("'"):
-                    c.write("e ")
-                elif ord(character) == ord("-") or ord(character) == ord("_"):
-                    c.write(" ")
-                elif (ord(",") <= ord(character) <= ord(".")
-                      or ord(":") <= ord(character) <= ord(";")
-                      or ord(character) == ord("?") or ord(character) == 33):
-                    c.write("")
-                else:
-                    c.write(character)
+        # Ouverture du fichier original en mode lecture (r) et du fichier nettoyé en mode écriture (w)
+        with open("speeches-20231108/"+element, "r") as r, open("Cleaned/"+element, "w") as c:
+            for line in r.readlines():
+                for character in line:
+                    # Convertit les majuscules en minuscules
+                    if ord("A") <= ord(character) <= ord("Z"):
+                        c.write(chr(ord(character)+(ord("a")-ord("A"))))
+                    #Remplace l'apostrophe par la lettre "e" et ajoute un espace
+                    elif ord(character) == ord("'"):
+                        c.write("e ")
+                    # Remplace le tiret ou le tiret du bas par un espace
+                    elif ord(character) == ord("-") or ord(character) == ord("_"):
+                        c.write(" ")
+                    # Supprime la ponctuation spécifiée
+                    elif (ord(",") <= ord(character) <= ord(".") or ord(":") <= ord(character) <= ord(";") or ord(character) == ord("?") or ord(character) == 33):
+                        c.write("")
+                    else:
+                        c.write(character)
 
 
+#focntion qui calcule le score tf de chaque mot grâce à un dictionnaire
 def score_tf(string):
+    # Initialisation du dictionnaire pour stocker les occurrences des mots
     dic = {}
+    #Vérification, si l'entré est une liste
     if type(string) == list:
         for i in range(len(string)):
+            # Vérification si le mot est déjà présent dans le dictionnaire
             if string[i] in dic:
+                # Si oui, incrémentation du compteur
                 dic[string[i]] += 1
             else:
+                 #Si non, incrémentation du compteur à 1
                 dic[string[i]] = 1
         return dic
 
     else:
+        # Si l'entrée est une chaîne de caractères, séparation des mots en utilisant l'espace comme délimiteur
         b = string.replace('\n', ' ')
         a = b.split(" ")
         for i in range(len(a)):
@@ -84,14 +93,17 @@ def score_tf(string):
                 dic[a[i]] = 1
         return dic
 
-
+#focntion qui calcule le score idf grâce à un dictionnaire.
 def score_idf():
+     # Dictionnaire pour stocker les occurrences des mots dans tous les documents
     dic = {}
+    # Dictionnaire pour stocker le score IDF pour chaque mot
     dicidf = {}
 
     for element in prez_fichiers:
         with open("Cleaned/" + element, "r") as c:
             for ligne in c.readlines():
+                # Division de la ligne en une liste de lignes
                 for lr in ligne.splitlines():
                     a = lr.split(" ")
                     for i in range(len(a)):
@@ -101,19 +113,24 @@ def score_idf():
                             dic[a[i]] = 1
 
     for element2 in prez_fichiers:
+        # Dictionnaire temporaire pour stocker la présence de mots dans chaque document
         tempdic = {}
         with open("Cleaned/" + element2, "r") as d:
             for ligne2 in d.readlines():
                 for lr in ligne2.splitlines():
                     b = lr.split(" ")
+                    # Parcours de chaque mot dans le premier dictionnaire 
                     for mot in dic:
+                        # Vérification si le mot est présent dans la ligne
                         if mot in b:
                             tempdic[mot] = 1
 
         for el in tempdic:
+            # Incrémentation du compteur global du mot
             dicidf[el] = dicidf.get(el, 0) + 1
 
     for ele in dicidf:
+        # Calcul du score IDF pour chaque mot
         dicidf[ele] = math.log10(nfile / dicidf[ele])
 
     return dicidf
