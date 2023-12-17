@@ -329,8 +329,9 @@ def question_tf_idf(string):
 
 def produit_scalaire(a, b):
     scal = 0.0                                                        # Initialisation de la variable pour stocker le résultat du produit scalaire
-    for i in range(len(a)):
-        scal += a[i]*b[i]                                             # Ajout du produit de chaque paire d'éléments correspondants
+        for i in range(len(b)):
+        scal += a[i] * b[i]                                           # Ajout du produit de chaque paire d'éléments correspondants
+    scal += sum(a[i:])                                                
     return scal
 
 
@@ -359,10 +360,8 @@ def calcul_pertinent(corpus, v_question, listenoms):                # Focntion q
 
     x = 0                                                           # Compteur pour parcourir les éléments dans listenoms
     for element in listenoms:
-        max_len = len(corpus[x])
-        vlist += [0.0] * (max_len - len(vlist))                     # Ajout de zéros pour aligner la longueur du vecteur avec celui du corpus
-        sim = calcul_similarite(corpus[x], vlist)                   # Calcul  la similarité  entre le vecteur question et le vecteur du corpus
 
+        sim = calcul_similarite(corpus[x], vlist)                   # Calcul  la similarité  entre le vecteur question et le vecteur du corpus
         if sim > maximum:                                           # Mise à jour du maximum et du nom du fichier si la similarité actuelle est plus grande
             maximum = sim
             filename = element
