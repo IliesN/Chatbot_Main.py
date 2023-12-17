@@ -19,11 +19,12 @@ prez_fichiers = liste_fichiers("speeches-20231108", ".txt")
 nfile = len(prez_fichiers)
 #Création d'un dictionnaire associant chaque prénom à des noms de dirigeants politiques
 prez_nom = {"Jacques": "Chirac",
-             "Valéry": "Giscard dEstaing",
-             "François": "Hollande",
-             "Emmanuel": "Macron",
-             "françois": "Mitterand",
-             "Nicolas": "Sarkozy"}
+
+            "Valéry": "Giscard dEstaing",
+            "François": "Hollande",
+            "Emmanuel": "Macron",
+            "françois": "Mitterand",
+            "Nicolas": "Sarkozy"}
 
 #Fonction pour stocker les noms de president dans une liste
 def prez_nomfamille():
@@ -42,7 +43,6 @@ def prez_nomfamille():
             if (file.read(11)[11:j]) not in prez_lastnam:
                 prez_lastnam.append(file.read(11)[11:j])
     return prez_lastnam
-
 
 def convert():
     for element in prez_fichiers:
@@ -157,9 +157,8 @@ def tf_idf_matrix():
 
     return mtfidf    # Retour de la matrice TF-IDF complète
 
-
-#fonction qui permet d'afficher la matrice 
-def print_tfidf_matrix():
+  
+def print_tfidf_matrix(): #fonction qui permet d'afficher la matrice 
     mtfidf = tf_idf_matrix()
     idfdic = score_idf()
     x = 0
@@ -168,25 +167,23 @@ def print_tfidf_matrix():
     for word in idfdic:
         # Mise à jour de la longueur maximale si nécessaire
         if len(word) > maxlen:
-            maxlen=len(word)
-        print(word, " "*(34-len(word)), end= " ")       # Affichage du mot avec un espacement approprié
+            maxlen = len(word)
+        print(word, " "*(34-len(word)), end=" ") # Affichage du mot avec un espacement approprié
     print(maxlen)
     print("\n")
-    for element in prez_fichiers:                       #Boucle sur chaque élément (nom de fichier) dans la liste prez_fichiers
-        print(element, " "*(32-len(element)), end =" ")
-        for value in mtfidf[x]:                         
+    for element in prez_fichiers: 
+        print(element, " "*(32-len(element)), end=" ")
+        for value in mtfidf[x]:
             if len(str(value)) == 2:
-                print(value," "*32, end= " ")              # Affichage de la valeur avec un espacement approprié basé sur la longueur du nombre
+                print(value, " "*32, end=" ") # Affichage de la valeur avec un espacement approprié basé sur la longueur du nombre
             elif len(str(value)) == 3:
-                print(value," "*31, end= " ")
+                print(value, " "*31, end=" ")
             elif len(str(value)) == 4:
-                print(value," "*30, end= " ")
-        print("\n")                                       # Saut de ligne après l'affichage de la ligne de la matrice de chaque fichier
-        x += 1                                            # Incrémentation de l'indice x pour passer au fichier suivant dans la matrice TF-IDF
-        
+                print(value, " "*30, end=" ")
+        print("\n")
+        x += 1
 
 
-#fonction qui retourne la liste des mots non important 
 def ex1():
     idfdic = score_idf()
     matrix = tf_idf_matrix()
@@ -215,11 +212,11 @@ def ex2():
                 maximum = matrix[i][x]
         x += 1
     for i in range(8):
-        x=0
+        x = 0
         for element in idfdic:
             if maximum == matrix[i][x]:   # Si la valeur maximale dans le document i est égale à la valeur actuelle dans la matrice TF-IDF
                 maxlist.append(element)
-            x+=1
+            x += 1
         x += 1
     if len(maxlist) == 1:
         return maxlist[0]
@@ -303,6 +300,7 @@ def ex6():
 
 def tokenisation(string):
     motvide = ["le", "de", "et", "la", "à", "est", "les", "pour", "un", "une"]
+    motquestion = ["comment", "pourquoi"]
     finalstr = ""
     for charac in string:
         if ord("A") <= ord(charac) <= ord("Z"):
@@ -314,7 +312,8 @@ def tokenisation(string):
         elif ord(charac) == ord("-") or ord(charac) == ord("_"):
             charac = " "
             finalstr += charac
-        elif ord(",") <= ord(charac) <= ord(".") or ord(":") <= ord(charac) <= ord(";") or ord(charac) == ord("?") or ord(charac) == 33:
+        elif (ord(",") <= ord(charac) <= ord(".") or ord(":") <= ord(charac) <= ord(";") or ord(charac) == ord("?")
+              or ord(charac) == 33):
 
             charac = ""
             finalstr += charac
@@ -322,7 +321,7 @@ def tokenisation(string):
             finalstr += charac
     exstr = finalstr.split()
     for element in exstr:
-        if element in motvide:
+        if element in motvide or element in motquestion:
             exstr.remove(element)
     return exstr
 
@@ -351,41 +350,63 @@ def question_tf_idf(string):
             qlist.append(round(tf_s[element]*idfs[element], 2))
         else:
             qlist.append(0.0)
-    return qlist
+
+    return qlist, tokenisation(string)[qlist.index(max(qlist))]
 
 
-
-def produit_scalaire(A, B):
+def produit_scalaire(a, b):
     scal = 0.0
-    for i in range(len(A)):
-        scal += A[i]*B[i]
+    for i in range(len(a)):
+        scal += a[i]*b[i]
     return scal
 
 
-def norme(A):
+def norme(a):
     normv = 0.0
-    for element in A:
-        normv+=element**2
+    for element in a:
+        normv += element**2
     normv = math.sqrt(normv)
     return normv
 
 
-def calcul_similarite(A, B):
-    sim = produit_scalaire(A,B)/norme(A)*norme(B)
+def calcul_similarite(a, b):
+    sim = produit_scalaire(a, b)/norme(a)*norme(b)
     return sim
 
-def calcul_pertinent(corpus, V_question, listenoms):
+
+def calcul_pertinent(corpus, v_question, listenoms):
+
     maximum = 0.0
+    vlist = v_question[0]
     filename = ""
-    x=0
+    mot_pertinent = v_question[1]
+
+    x = 0
     for element in listenoms:
         max_len = len(corpus[x])
-        V_question += [0.0] * (max_len - len(V_question))
-        sim = calcul_similarite(corpus[x], V_question)
+        vlist += [0.0] * (max_len - len(vlist))
+        sim = calcul_similarite(corpus[x], vlist)
 
         if sim > maximum:
             maximum = sim
-
             filename = element
-        x+=1
-    return filename
+
+        x += 1
+
+    return "speeches-20231108/"+filename, mot_pertinent, maximum
+
+def phrase(fichier):
+
+    with open(fichier[0], 'r') as f:
+        r = f.read()
+        saviour = r.splitlines()
+        for element in saviour:
+            x = element.split(" ")
+            if str(fichier[1]) in x:
+                    for e in x:
+                        print(e, end = " ")
+                    break
+
+
+
+
