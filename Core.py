@@ -222,8 +222,7 @@ def ex3():
         else:
             return max1w, max2w
 
-#focntion qui indique le(s) nom(s) du (des) président(s) qui a (ont) parlé de la « Nation » et celui qui l’a répété le plus de
-fois
+#focntion qui indique le(s) nom(s) du (des) président(s) qui a (ont) parlé de la « Nation » et celui qui l’a répété le plus de fois
 def ex4():
     listprez = []
     for element in prez_fichiers:
