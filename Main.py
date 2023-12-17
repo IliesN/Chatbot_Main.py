@@ -64,3 +64,4 @@ while True:
             Core.phrase(Core.calcul_pertinent(Core.tf_idf_matrix(), Core.question_tf_idf(q), Core.prez_fichiers)[0:2])
 
         print("\n")
+
