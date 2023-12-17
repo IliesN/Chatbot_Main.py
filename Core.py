@@ -19,6 +19,23 @@ prez_nom = {"Jacques": "Chirac",
             "françois": "Mitterand",
             "Nicolas": "Sarkozy"}
 
+#Fonction pour stocker les noms de president dans une liste
+def prez_nomfamille():
+    prez_lastnam = []
+    for filename in prez_fichiers:
+        # Ouverture du fichier en mode lecture
+        with open("speeches-20231108/" + filename, "r") as file:
+            j = 0
+            for char in file.read():
+                # Si le caractère est un chiffre ou un point, arrête la boucle
+                if char in ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "."]:
+                    break
+                else:
+                    j += 1
+            #Lecture d'une portion du fichier pour obtenir le nom de famille puis vérifie si le nom est dans la liste prez_lastam
+            if (file.read(11)[11:j]) not in prez_lastnam:
+                prez_lastnam.append(file.read(11)[11:j])
+    return prez_lastnam
 
 def convert():
     for element in prez_fichiers:
