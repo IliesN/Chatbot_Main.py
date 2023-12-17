@@ -135,26 +135,30 @@ def score_idf():
 
     return dicidf
 
-
+#focntion qui permet de calculer les scores tfidf et de les stocker dans une matrice
 def tf_idf_matrix():
     idfdic = score_idf()
-    mtfidf = []
+    #création d'une matrice tfidf
+    mtfidf = [] # Liste pour stocker les scores TF-IDF du document actuel
+        
 
     for element in prez_fichiers:
         newlist = []
         with open("Cleaned/" + element) as f:
             readfile = f.read()
             for e in idfdic:
+                # Vérification de la présence du terme dans les scores TF
                 if e in score_tf(readfile):
+                    # Calcul du score TF-IDF et ajout à la liste
                     newlist.append(round(score_tf(readfile)[e] * idfdic[e], 2))
                 else:
                     newlist.append(0.0)
         mtfidf.append(newlist)
 
-    return mtfidf
+    return mtfidf    # Retour de la matrice TF-IDF complète
 
 
-
+#fonction qui permet d'afficher la matrice 
 def print_tfidf_matrix():
     mtfidf = tf_idf_matrix()
     idfdic = score_idf()
@@ -162,34 +166,36 @@ def print_tfidf_matrix():
     print(" "*34, end=" ")
     maxlen = 0
     for word in idfdic:
+        # Mise à jour de la longueur maximale si nécessaire
         if len(word) > maxlen:
             maxlen=len(word)
-        print(word, " "*(34-len(word)), end= " ")
+        print(word, " "*(34-len(word)), end= " ")       # Affichage du mot avec un espacement approprié
     print(maxlen)
     print("\n")
-    for element in prez_fichiers:
+    for element in prez_fichiers:                       #Boucle sur chaque élément (nom de fichier) dans la liste prez_fichiers
         print(element, " "*(32-len(element)), end =" ")
-        for value in mtfidf[x]:
+        for value in mtfidf[x]:                         
             if len(str(value)) == 2:
-                print(value," "*32, end= " ")
+                print(value," "*32, end= " ")              # Affichage de la valeur avec un espacement approprié basé sur la longueur du nombre
             elif len(str(value)) == 3:
                 print(value," "*31, end= " ")
             elif len(str(value)) == 4:
                 print(value," "*30, end= " ")
-        print("\n")
-        x += 1
+        print("\n")                                       # Saut de ligne après l'affichage de la ligne de la matrice de chaque fichier
+        x += 1                                            # Incrémentation de l'indice x pour passer au fichier suivant dans la matrice TF-IDF
+        
 
 
-
+#fonction qui retourne la liste des mots non important 
 def ex1():
     idfdic = score_idf()
     matrix = tf_idf_matrix()
-    uniml = []
-    x = 0
+    uniml = []                  # Liste pour stocker les termes uniques
+    x = 0                       
     for element in idfdic:
         unim = True
         for i in range(8):
-            if matrix[i][x] != 0.0:
+            if matrix[i][x] != 0.0:  # Vérification si la valeur est différente de zéro
                 unim = False
         if unim:
             uniml.append(element)
@@ -202,16 +208,16 @@ def ex2():
     matrix = tf_idf_matrix()
     maximum = 0.0
     maxlist = []
-    x = 0
+    x = 0                     # Initialisation de la valeur maximale
     for _ in idfdic:
         for i in range(8):
-            if matrix[i][x] > maximum:
+            if matrix[i][x] > maximum:  # Vérification si la valeur est supérieure à la valeur maximale actuelle
                 maximum = matrix[i][x]
         x += 1
     for i in range(8):
         x=0
         for element in idfdic:
-            if maximum == matrix[i][x]:
+            if maximum == matrix[i][x]:   # Si la valeur maximale dans le document i est égale à la valeur actuelle dans la matrice TF-IDF
                 maxlist.append(element)
             x+=1
         x += 1
@@ -220,7 +226,7 @@ def ex2():
     else:
         return maxlist
 
-
+#focntion qui retourne le(s) mot(s) le(s) plus répété(s)
 def ex3():
     unimportant_words = ex1()
     max1 = 0
@@ -245,31 +251,29 @@ def ex3():
         else:
             return max1w, max2w
 
-
+#focntion qui indique le(s) nom(s) du (des) président(s) qui a (ont) parlé de la « Nation » et celui qui l’a répété le plus de
+fois
 def ex4():
     listprez = []
     for element in prez_fichiers:
         f = open("Cleaned/"+element)
         reading = f.read()
         dic = score_tf(reading)
-        if "nation" in dic and element.strip("Nomination_").strip(".txt").strip("1").strip("2") not in listprez:
-            listprez.append(element.strip("Nomination_").strip(".txt").strip("1").strip("2"))
+        if "nation" in dic and element.strip("Nomination_").strip(".txt").strip("1").strip("2") not in listprez:    # Vérification de la présence du mot "nation" dans le dictionnaire et exclusion des duplicatas
+            listprez.append(element.strip("Nomination_").strip(".txt").strip("1").strip("2"))                       # Ajout du nom du président dans la liste 
     return listprez
 
 
 def ex5():
-    premier = True
-    premierprez = []
+    prez = []
     for element in prez_fichiers:
         f = open("Cleaned/"+element)
         reading = f.read()
         dic = score_tf(reading)
-        while premier:
-            if "climat" or "écologie" in dic:
-                premierprez.append(element.strip("Nomination_").strip(".txt").strip("1").strip("2"))
-                premier = False
-    return premierprez[0]
-
+        if "climat" or "écologie" in dic:
+            if element.strip("Nomination_").strip(".txt").strip("1").strip("2") not in prez:
+                prez.append(element.strip("Nomination_").strip(".txt").strip("1").strip("2"))
+    return prez
 
 def ex6():
     dic = {}
