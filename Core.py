@@ -202,25 +202,15 @@ def ex3():
     unimportant_words = ex1()
     max1 = 0
     max1w = ""
-    max2 = 0
-    max2w = ""
     with open("Cleaned/Nomination_Chirac1.txt", "r") as file:
         read1 = file.read()
         dic1 = score_tf(read1)
-        dic2 = score_tf(read1)
-
         for element in dic1:
             if dic1[element] > max1 and element != '' and element not in unimportant_words:
                 max1 = dic1[element]
                 max1w = element
-        for element in dic2:
-            if dic2[element] > max2 and element != '' and element not in unimportant_words:
-                max2 = dic2[element]
-                max2w = element
-        if max1w == max2w:
-            return max1w
-        else:
-            return max1w, max2w
+        return max1w
+      
 
 #focntion qui indique le(s) nom(s) du (des) président(s) qui a (ont) parlé de la « Nation » et celui qui l’a répété le plus de fois
 def ex4():
