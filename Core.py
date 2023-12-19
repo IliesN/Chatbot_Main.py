@@ -362,14 +362,14 @@ def calcul_pertinent(corpus, v_question, listenoms):                # Focntion q
 
 def phrase(fichier):
 
-    with open(fichier[0], 'r') as f:
+    with open(fichier[0], 'r') as f:                                # Ouvrir le fichier spécifié par fichier[0] en mode lecture ('r')
         r = f.read()
-        saviour = r.splitlines()
+        saviour = r.splitlines()                                    # Divise le contenu en lignes
         for element in saviour:
-            x = element.split(" ")
-            if str(fichier[1]) in x:
+            x = element.split(" ")                                  # Diviser la ligne en mots en utilisant l'espace comme séparateur
+            if str(fichier[1]) in x:                                # Vérifie si le mot spécifié (fichier[1]) est présent dans la ligne
                     for e in x:
-                        print(e, end = " ")
+                        print(e, end = " ")                         # Si le mot est trouvé, imprimer tous les mots de la ligne
                     break
 
 
