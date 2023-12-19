@@ -8,7 +8,7 @@ print("Bienvenue dans le menu principal")
 time.sleep(1.3)
 while True:
     ans = str(input("Voulez-vous accéder aux fonctionnalités de la partie I ou au mode Chatbot ? \n"))
-    if ans.lower() in ["fonctionnalités", "partie i", "1"]:
+    if ans.lower() in ["fonctionnalités", "partie i", "partie 1", "1"]:
         stay = True
         while stay:
 
@@ -21,14 +21,12 @@ while True:
             print("6. Hormis les mots dits «non importants», "
                   "quel(s) est (sont) le(s) mot(s) que tous les présidents ont évoqués.")
             print("7. Quitter le mode fonctionnalités.")
-            choice = int(input("Choisissez un nombre entre 1 et 6 : "))
+            choice = int(input("Choisissez un nombre entre 1 et 7 : "))
 
             if choice == 1:
-                print("Question 1 sélectionnée. Veuillez patienter...")
                 print("La liste des mots les moins importants sont :", Core.ex1())
                 time.sleep(3)
             elif choice == 2:
-                print("Question 2 sélectionnée. Veuillez patienter...")
                 print("La liste des mots ayant le score TD-IDF le plus élevé est :", Core.ex2())
                 time.sleep(3)
             elif choice == 3:
@@ -41,10 +39,9 @@ while True:
                 print(Core.ex4()[-1])
                 time.sleep(3)
             elif choice == 5:
-                print("Le premier président à parler du climat et/ou de l'écologie est :", Core.ex5())
+                print("Les présidents parlant du climat et/ou de l'écologie sont :", Core.ex5())
                 time.sleep(3)
             elif choice == 6:
-                print("Question 6 sélectionnée. Veuillez patienter...")
                 print("Voici la liste des mots répétés par tous les présidents, "
                       "hormis les mots non-importants :", Core.ex6())
                 time.sleep(3)
@@ -58,10 +55,9 @@ while True:
         qlist = q.split(" ")
         if qlist[0] in question_starters:
             print(question_starters[qlist[0]])
-            Core.phrase(Core.calcul_pertinent(Core.tf_idf_matrix(),Core.question_tf_idf(q),Core.prez_fichiers)[0:2])
+            Core.phrase(Core.calcul_pertinent(Core.matrix,Core.question_tf_idf(q),Core.prez_files)[0:2])
         else:
             print("Veuillez Patienter... \n")
-            Core.phrase(Core.calcul_pertinent(Core.tf_idf_matrix(), Core.question_tf_idf(q), Core.prez_fichiers)[0:2])
+            Core.phrase(Core.calcul_pertinent(Core.matrix, Core.question_tf_idf(q), Core.prez_files)[0:2])
 
         print("\n")
-
