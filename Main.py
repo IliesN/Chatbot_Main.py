@@ -57,7 +57,6 @@ while True:
             print(question_starters[qlist[0]])
             Core.phrase(Core.calcul_pertinent(Core.matrix,Core.question_tf_idf(q),Core.prez_files)[0:2])
         else:
-            print("Veuillez Patienter... \n")
             Core.phrase(Core.calcul_pertinent(Core.matrix, Core.question_tf_idf(q), Core.prez_files)[0:2])
 
         print("\n")
