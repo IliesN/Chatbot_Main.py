@@ -349,8 +349,6 @@ def produit_scalaire(a, b):
     scal = 0.0  # Initialisation de la variable pour stocker le résultat du produit scalaire
     for i in range(len(b)):
         scal += a[i] * b[i]  # Ajout du produit de chaque paire d'éléments correspondants
-
-
     scal += sum(a[i:])
     return scal
 
@@ -389,17 +387,21 @@ def calcul_pertinent(corpus, v_question, listenoms):  # Focntion qui retourne le
             filename = element
 
         x += 1
-
+    if filename == '':
+        return "Désolé, nous ne pouvons pas répondre à cette question pour le moment."
     return "speeches-20231108/" + filename, mot_pertinent, maximum  # Retourne le résultat final (nom du fichier, mot pertinent, et similarité maximale)
 
 
 def phrase(fichier):
-    with open(fichier[0], 'r') as f:
-        r = f.read()
-        saviour = r.splitlines()
-        for element in saviour:
-            x = element.split(" ")
-            if str(fichier[1]) in x:
-                for e in x:
-                    print(e, end=" ")
-                break
+    try:
+        with open(fichier[0], 'r') as f:
+            r = f.read()
+            saviour = r.splitlines()
+            for element in saviour:
+                x = element.split(" ")
+                if str(fichier[1]) in x:
+                    for e in x:
+                        print(e, end=" ")
+                    break
+    except FileNotFoundError:
+        return "Désolé, nous ne pouvons pas répondre à cette question pour le moment."
